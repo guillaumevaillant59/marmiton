@@ -3,9 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\IngredientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[UniqueEntity(fields: ['nom'], message: 'Ce nom d\'ingrédient existe déjà.')]
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
 class Ingredient
 {
@@ -37,9 +40,16 @@ class Ingredient
     #[Assert\NotBlank]
     private ?\DateTimeImmutable $dateCreation = null;
 
+    /**
+     * @var Collection<int, Recipe>
+     */
+    #[ORM\ManyToMany(targetEntity: Recipe::class, mappedBy: 'ingredients')]
+    private Collection $recipes;
+
     public function __construct()
     {
         $this->dateCreation = new \DateTimeImmutable();
+        $this->recipes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -79,6 +89,33 @@ class Ingredient
     public function setDateCreation(\DateTimeImmutable $dateCreation): static
     {
         $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Recipe>
+     */
+    public function getRecipes(): Collection
+    {
+        return $this->recipes;
+    }
+
+    public function addRecipe(Recipe $recipe): static
+    {
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes->add($recipe);
+            $recipe->addIngredient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipe(Recipe $recipe): static
+    {
+        if ($this->recipes->removeElement($recipe)) {
+            $recipe->removeIngredient($this);
+        }
 
         return $this;
     }

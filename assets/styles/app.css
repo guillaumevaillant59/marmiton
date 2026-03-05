@@ -1,3 +1,24 @@
 body {
-    background-color: skyblue;
+    background-color: rgb(228, 228, 228);
+}
+
+.page-link {
+    color: #772953;
+}
+.page-item.active .page-link {
+    background-color: #772953;
+    border-color: #772953;
+}
+
+h1 {
+    color: #772953;
+}
+
+a {
+    color: #772953;
+}
+
+.btn {
+    background-color: #772953;
+    color: white;
 }

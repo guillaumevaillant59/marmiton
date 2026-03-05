@@ -5,10 +5,14 @@
 
 {% block body %}
 	<h1>Ingredient index</h1>
+	<div class="text-dark count">
+		{{ ingredients.getTotalItemCount() }} ingredient(s) found
+	</div>
+
 
 	<table class="table">
 		<thead>
-			<tr>
+			<tr class="table-dark">
 				<th>Id</th>
 				<th>Nom</th>
 				<th>PrixAuKilo</th>
@@ -18,14 +22,14 @@
 		</thead>
 		<tbody>
 			{% for ingredient in ingredients %}
-				<tr>
+				<tr class="table-success">
 					<td>{{ ingredient.id }}</td>
 					<td>{{ ingredient.nom }}</td>
 					<td>{{ ingredient.prixAuKilo }}</td>
 					<td>{{ ingredient.dateCreation ? ingredient.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
 					<td>
-						<a href="{{ path('app_ingredient_show', {'id': ingredient.id}) }}">show</a>
-						<a href="{{ path('app_ingredient_edit', {'id': ingredient.id}) }}">edit</a>
+						<a class="text-dark" href="{{ path('app_ingredient_show', {'id': ingredient.id}) }}">show</a>
+						<a class="text-dark" href="{{ path('app_ingredient_edit', {'id': ingredient.id}) }}">edit</a>
 					</td>
 				</tr>
 			{% else %}
@@ -35,9 +39,9 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	<div class= "navigation d-flex justify-content-center">
-		{{ knp_pagination_render(ingredients) }}
+	<div class= "text-dark navigation d-flex justify-content-center" >
+		{{ knp_pagination_render(ingredients) }}		
 	</div>
 
-	<a href="{{ path('app_ingredient_new') }}">Create new</a>
+	<a class="text-dark" href="{{ path('app_ingredient_new') }}">Create new</a>
 {% endblock %}
